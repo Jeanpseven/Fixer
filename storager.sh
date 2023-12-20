@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Lista de dispositivos conectados:"
-lsblk
+lsblk -nl | awk '{print NR, $1}'
 
 read -p "Digite o número do dispositivo que deseja usar como armazenamento: " escolha_numero
 
@@ -11,16 +11,13 @@ escolha=$(lsblk -nl | awk -v var="$escolha_numero" 'NR==var {print $1}')
 if [ -b "/dev/$escolha" ]; then
     echo "Você escolheu /dev/$escolha como armazenamento."
 
-    # Adiciona a entrada ao /etc/fstab
-    echo "/dev/$escolha   /caminho/de/montagem   tipo_de_sistema_de_arquivos   defaults   0   2" | sudo tee -a /etc/fstab > /dev/null
+    # Adicione aqui o código para usar o dispositivo selecionado, por exemplo, montá-lo.
+    # Certifique-se de ter as permissões adequadas para montar o dispositivo.
 
-    # Cria o diretório de montagem, se não existir
-    sudo mkdir -p /caminho/de/montagem
+    # Exemplo: Montando o dispositivo em /mnt
+    sudo mount "/dev/$escolha" /mnt
 
-    # Monta o dispositivo
-    sudo mount -a
-
-    echo "O dispositivo /dev/$escolha será montado automaticamente na inicialização."
+    echo "O dispositivo /dev/$escolha foi montado em /mnt."
 else
     echo "Dispositivo inválido. Certifique-se de inserir um número de dispositivo válido."
 fi
