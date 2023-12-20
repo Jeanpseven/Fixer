@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Lista de dispositivos conectados:"
-lsblk -nl | awk '{print NR, $1}'
+lsblk -nl | awk '{print NR, $1, $4}'
 
 read -p "Digite o número do dispositivo que deseja usar como armazenamento: " escolha_numero
 
