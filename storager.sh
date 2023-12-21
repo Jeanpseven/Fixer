@@ -17,7 +17,10 @@ if [ -b "/dev/$escolha" ]; then
     # Exemplo: Montando o dispositivo em /mnt
     sudo mount "/dev/$escolha" /mnt
 
-    echo "O dispositivo /dev/$escolha foi montado em /mnt."
+    # Adiciona a entrada ao /etc/fstab para montar automaticamente na inicialização
+    echo "/dev/$escolha   /mnt   auto   defaults   0   0" | sudo tee -a /etc/fstab > /dev/null
+
+    echo "O dispositivo /dev/$escolha foi montado em /mnt e configurado para montar automaticamente na inicialização."
 else
     echo "Dispositivo inválido. Certifique-se de inserir um número de dispositivo válido."
 fi
