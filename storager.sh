@@ -11,16 +11,21 @@ escolha=$(lsblk -nl | awk -v var="$escolha_numero" 'NR==var {print $1}')
 if [ -b "/dev/$escolha" ]; then
     echo "Você escolheu /dev/$escolha como armazenamento."
 
-    # Adicione aqui o código para usar o dispositivo selecionado, por exemplo, montá-lo.
-    # Certifique-se de ter as permissões adequadas para montar o dispositivo.
+    # Verifica se a entrada já existe no /etc/fstab
+    if ! grep -q "/dev/$escolha" /etc/fstab; then
+        # Adicione aqui o código para usar o dispositivo selecionado, por exemplo, montá-lo.
+        # Certifique-se de ter as permissões adequadas para montar o dispositivo.
 
-    # Exemplo: Montando o dispositivo em /mnt
-    sudo mount "/dev/$escolha" /mnt
+        # Exemplo: Montando o dispositivo em /mnt
+        sudo mount "/dev/$escolha" /mnt
 
-    # Adiciona a entrada ao /etc/fstab para montar automaticamente na inicialização
-    echo "/dev/$escolha   /mnt   auto   defaults   0   0" | sudo tee -a /etc/fstab > /dev/null
+        # Adiciona a entrada ao /etc/fstab para montar automaticamente na inicialização
+        echo "/dev/$escolha   /mnt   auto   defaults   0   0" | sudo tee -a /etc/fstab > /dev/null
 
-    echo "O dispositivo /dev/$escolha foi montado em /mnt e configurado para montar automaticamente na inicialização."
+        echo "O dispositivo /dev/$escolha foi montado em /mnt e configurado para montar automaticamente na inicialização."
+    else
+        echo "A entrada para /dev/$escolha já existe em /etc/fstab. Nenhuma alteração foi feita."
+    fi
 else
     echo "Dispositivo inválido. Certifique-se de inserir um número de dispositivo válido."
 fi
